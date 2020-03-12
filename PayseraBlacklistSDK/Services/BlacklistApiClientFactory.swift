@@ -8,11 +8,10 @@ public class BlacklistApiClientFactory {
         tokenRefresher: PSTokenRefresherProtocol? = nil,
         logger: PSLoggerProtocol? = nil
     ) -> BlacklistApiClient {
-        let sessionManager = SessionManager()
-        sessionManager.adapter = PSRequestAdapter(credentials: credentials)
+        let session = Session(interceptor: PSRequestAdapter(credentials: credentials))
     
         return BlacklistApiClient(
-            sessionManager: sessionManager,
+            session: session,
             credentials: credentials,
             tokenRefresher: tokenRefresher,
             logger: logger
