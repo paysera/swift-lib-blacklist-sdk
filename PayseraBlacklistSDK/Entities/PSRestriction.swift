@@ -14,6 +14,8 @@ public class PSRestriction: Mappable {
     public var reviewStatus: String?
     public var comments: [PSRestrictionComment]?
     public var resolvedAt: Date?
+    public var restrictedActions: [PSRestrictionRestrictedAction]?
+    public var activatesAt: Date?
     
     public init() {}
     
@@ -32,6 +34,8 @@ public class PSRestriction: Mappable {
         reviewStatus                <- map["review_status"]
         comments                    <- map["comments"]
         resolvedAt                  <- (map["resolved_at"], DateTransform())
+        restrictedActions           <- map["restricted_actions"]
+        activatesAt                 <- (map["activates_at"], DateTransform())
     }
 }
 
@@ -48,5 +52,19 @@ public class PSRestrictionComment: Mappable {
         id      <- map["id"]
         comment <- map["comment"]
         type    <- map["type"]
+    }
+}
+
+public class PSRestrictionRestrictedAction: Mappable {
+    public var id: Int!
+    public var action: String!
+    
+    public init() {}
+    
+    required public init?(map: Map) {}
+    
+    public func mapping(map: Map) {
+        id      <- map["id"]
+        action  <- map["action"]
     }
 }
