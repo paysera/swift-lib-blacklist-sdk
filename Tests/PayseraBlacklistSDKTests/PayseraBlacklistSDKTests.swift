@@ -1,7 +1,6 @@
 import XCTest
 import JWTDecode
 import PayseraCommonSDK
-import PromiseKit
 
 @testable import PayseraBlacklistSDK
 

@@ -1,24 +1,24 @@
-import Foundation
 import Alamofire
+import Foundation
 import PayseraCommonSDK
 
-public enum BlacklistApiRequestRouter: URLRequestConvertible {
+enum BlacklistApiRequestRouter {
     // MARK: - GET
     case getUserRestrictions(filter: PSBaseFilter)
 
     // MARK: - Declarations
-    static var baseURLString = "https://blacklist.paysera.com"
+    private static let baseURL = URL(string: "https://blacklist.paysera.com")!
     
     private var method: HTTPMethod {
         switch self {
-        case .getUserRestrictions( _):
+        case .getUserRestrictions:
             return .get
         }
     }
     
     private var path: String {
         switch self {
-        case .getUserRestrictions( _):
+        case .getUserRestrictions:
             return "/restriction/rest/v1/restrictions"
         }
     }
@@ -29,22 +29,14 @@ public enum BlacklistApiRequestRouter: URLRequestConvertible {
             return filter.toJSON()
         }
     }
-    
-    // MARK: - Method
-    public func asURLRequest() throws -> URLRequest {
-        let url = try! BlacklistApiRequestRouter.baseURLString.asURL()
-        
-        var urlRequest = URLRequest(url: url.appendingPathComponent(path))
-        urlRequest.httpMethod = method.rawValue
+}
 
-        switch self {
-        case (_) where method == .get:
-            urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
-            
-        default:
-            break
-        }
-
+extension BlacklistApiRequestRouter: URLRequestConvertible {
+    func asURLRequest() throws -> URLRequest {
+        let url = Self.baseURL.appendingPathComponent(path)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.method = method
+        urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
         return urlRequest
     }
 }
