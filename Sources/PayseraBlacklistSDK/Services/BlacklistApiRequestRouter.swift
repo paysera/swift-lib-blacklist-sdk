@@ -2,12 +2,12 @@ import Alamofire
 import Foundation
 import PayseraCommonSDK
 
-public enum BlacklistApiRequestRouter: URLRequestConvertible {
+enum BlacklistApiRequestRouter {
     // MARK: - GET
     case getUserRestrictions(filter: PSBaseFilter)
 
     // MARK: - Declarations
-    static let baseURL = URL(string: "https://blacklist.paysera.com")!
+    private static let baseURL = URL(string: "https://blacklist.paysera.com")!
     
     private var method: HTTPMethod {
         switch self {
@@ -29,9 +29,10 @@ public enum BlacklistApiRequestRouter: URLRequestConvertible {
             return filter.toJSON()
         }
     }
-    
-    // MARK: - Method
-    public func asURLRequest() throws -> URLRequest {
+}
+
+extension BlacklistApiRequestRouter: URLRequestConvertible {
+    func asURLRequest() throws -> URLRequest {
         let url = Self.baseURL.appendingPathComponent(path)
         var urlRequest = URLRequest(url: url)
         urlRequest.method = method
