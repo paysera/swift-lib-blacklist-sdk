@@ -31,8 +31,11 @@ class PayseraBlacklistSDKTests: XCTestCase {
             .done { obj in
                 print(obj)
             }.catch { error in
-                if let error = error as? PSApiError {
-                    print(error.description)
+                if
+                    let error = error as? PSApiError,
+                    let description = error.description
+                {
+                    print(description)
                 }
                 
             }.finally { expectation.fulfill() }
